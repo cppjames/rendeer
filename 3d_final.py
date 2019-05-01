@@ -1,7 +1,5 @@
 from PIL import Image, ImageDraw
 import math
-import time
-from time import sleep
 
 def add(v1, v2):
     return [x + y for (x, y) in zip(v1, v2)]
