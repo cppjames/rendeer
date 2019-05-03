@@ -1,7 +1,6 @@
 from PIL import Image, ImageDraw
 import math
 import meshes
-import numpy
 
 def center(vertices):
     centerx = 0
