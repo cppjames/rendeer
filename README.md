@@ -11,9 +11,9 @@ These instructions will guide you through the installation and usage of Rendeer.
 
 ### Requirements
 This project was made using Python 3.6. You need to go to [the official Python website](https://www.python.org/downloads/release/python-368/) and install Python 3.6 or a newer version.
-You also need the Pillow library, which you can install with the command:
+You also need the Pillow and the tqdm library, which you can install with the command:
 ```
-pip install pillow
+pip install pillow tqdm
 ```
 
 ### Usage
