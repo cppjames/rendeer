@@ -31,7 +31,7 @@ If it's in a folder called "Trees" that's in the same folder as `wavefront_impor
 ```
 Trees\tree.obj
 ```
-#### Note: The three files (`rendeer.py`, `meshes.py` and `wavefront_importer.py`) have to be all in the same directory for everything to work properly.
+#### Note: The four files (`rendeer.py`, `meshes.py`, `settings.py` and `wavefront_importer.py`) have to be all in the same directory for everything to work properly.
 The data from the .obj file will be saved in a file called `meshes.py`. You can now run the renderer and it will display your mesh in an image. **You might have to move/rotate your mesh in order to display it as you like.**
 
 ## Changelog
