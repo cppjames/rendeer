@@ -25,7 +25,7 @@ gouraudColor = [255, 211, 137]
 
 lightVector = [[1, 0, 0]] #initial position of the source of light, relative to the center (0, 0, 0)
     
-meshPosition = [1, 0.7, -1.2] #position of the mesh. duh
+meshPosition = [1, 0.7, -0.2] #position of the mesh. duh
 
 renderFaceNormals = False #should it render the normals of the faces?
 renderHardVertexNormals = False #should it render the hard normals of the vertices?
