@@ -229,7 +229,10 @@ def draw_line(start, end, startColor, endColor):
             except IndexError:
                 noname = "wut"
         else:
-            imgpixels[pixel[0], pixel[1]] = endColor
+            try:
+                imgpixels[pixel[0], pixel[1]] = endColor
+            except IndexError:
+                noname = "wut"
             
 shadingMode = settings.shadingMode
     
