@@ -3,14 +3,12 @@ import math
 import meshes
 from tqdm import tqdm
 import settings
+#argparse
 
 def center(vertices):
-    centerx = 0
-    centery = 0
-    centery = 0
-    sumx = 0
-    sumy = 0
-    sumz = 0
+    """Returns the center of a polygon using the arithmetic mean
+    """
+    sumx, sumy, sumz = 0, 0, 0
     for v in vertices:
         sumx += v[0]
         sumy += v[1]
@@ -26,7 +24,7 @@ def rotatePoints(vertices, centerVector, yRot, xRot, zRot):
     rotVerticesXY = []
     rotVerticesXYZ = []
     
-    for v in tqdm(vertices, ascii = True, desc = "Rotating the mesh"):
+    for v in vertices:
         v[0] -= centerVector[0]
         v[1] -= centerVector[1]
         v[2] -= centerVector[2]
@@ -111,7 +109,7 @@ def calculateScreenPoint(v):
     xp = xv - (((xv - xk) * (zv - zp)) / (zv - zk))
     yp = yv - (((yv - yk) * (zv - zp)) / (zv - zk))
     
-    return [int(xp * 50 + 100), int(yp * 50 + 100)]
+    return [int(res * (xp * 50 + 100)), int(res * (yp * 50 + 100))]
     
 def calculateSurfaceNormal(triangle):
     U = substract(triangle[1], triangle[0])
@@ -124,19 +122,33 @@ def calculateSurfaceNormal(triangle):
     return [Nx/5, Ny/5, Nz/5]
     
 def distance(a, b):
+    """Return the distance between two vectors using the pythagorean theory
+    """
     return (math.sqrt(math.pow((b[0] - a[0]), 2) + math.pow((b[1] - a[1]), 2) + math.pow((b[2] - a[2]), 2)))
     
 def degreesToRadians(angle):
+    """Simple degrees-to-radians converter
+    """
     return (angle * 2 * math.pi) / 360
     
 def radiansToDegrees(angle):
+    """Simple radians-to-degrees converter
+    """
     return (angle * 360) / (math.pi * 2)
 
 def angleBetweenVectors(a, b):
+    """Returns the angle between two vectors, in degreesToRadians
+    """
+    
+    #calculates the cosine
     cos = (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]) / (distance([0, 0, 0], a) * distance([0, 0, 0], b))
+    
     return radiansToDegrees(math.acos(cos))
     
 def sortFacesByDistance(arr): 
+    """Uses Insertion Sort to sort all the faces by the distance from the center to the camera
+    """
+    
     for i in tqdm(range(1, len(arr)), ascii = True, desc = "Sorting faces"): 
   
         key = arr[i]
@@ -147,17 +159,92 @@ def sortFacesByDistance(arr):
                 j -= 1
         arr[j+1] = key 
 
+def colorLerp(color1, color2, t):
+    return (int(color1[0] + ((color2[0] - color1[0]) * t)), int(color1[1] + ((color2[1] - color1[1]) * t)), int(color1[2] + ((color2[2] - color1[2]) * t)))
+    
+def vectorLerpRound(v1, v2, t):
+    return [int(v1[0] + ((v2[0] - v1[0]) * t)), int(v1[1] + ((v2[1] - v1[1]) * t))]
+        
+def draw_line(start, end, startColor, endColor):
+    """Bresenham's Line Algorithm
+    Produces a list of tuples from start and end
+ 
+    >>> points1 = get_line((0, 0), (3, 4))
+    >>> points2 = get_line((3, 4), (0, 0))
+    >>> assert(set(points1) == set(points2))
+    >>> print points1
+    [(0, 0), (1, 1), (1, 2), (2, 3), (3, 4)]
+    >>> print points2
+    [(3, 4), (2, 3), (1, 2), (1, 1), (0, 0)]
+    """
+    # Setup initial conditions
+    x1, y1 = start
+    x2, y2 = end
+    dx = x2 - x1
+    dy = y2 - y1
+ 
+    # Determine how steep the line is
+    is_steep = abs(dy) > abs(dx)
+ 
+    # Rotate line
+    if is_steep:
+        x1, y1 = y1, x1
+        x2, y2 = y2, x2
+ 
+    # Swap start and end points if necessary and store swap state
+    swapped = False
+    if x1 > x2:
+        x1, x2 = x2, x1
+        y1, y2 = y2, y1
+        swapped = True
+ 
+    # Recalculate differentials
+    dx = x2 - x1
+    dy = y2 - y1
+ 
+    # Calculate error
+    error = int(dx / 2.0)
+    ystep = 1 if y1 < y2 else -1
+ 
+    # Iterate over bounding box generating points between start and end
+    y = y1
+    points = []
+    for x in range(x1, x2 + 1):
+        coord = (y, x) if is_steep else (x, y)
+        points.append(coord)
+        error -= abs(dy)
+        if error < 0:
+            y += ystep
+            error += dx
+ 
+    # Reverse the list if the coordinates were swapped
+    if swapped:
+        points.reverse()
+    
+    imgpixels = img.load()
+    for pixel in points:
+        if (distance([end[0], end[1], 0], [start[0], start[1], 0]) != 0):
+            try:
+                imgpixels[pixel[0], pixel[1]] = colorLerp(startColor, endColor, distance([pixel[0], pixel[1], 0], [start[0], start[1], 0]) / distance([end[0], end[1], 0], [start[0], start[1], 0]))
+            except IndexError:
+                noname = "wut"
+        else:
+            imgpixels[pixel[0], pixel[1]] = endColor
+            
 shadingMode = settings.shadingMode
     
 yRotation = settings.yRotation
 xRotation = settings.xRotation
 zRotation = settings.zRotation
 
+res = settings.imageResolution / 100
+
 lightDirectionX = settings.lightDirectionX
 lightDirectionY = settings.lightDirectionY
 lightDirectionZ = settings.lightDirectionZ
 
 diffuseColor = settings.diffuseColor
+gouraudColor = settings.gouraudColor
 
 lightVector = settings.lightVector
     
@@ -196,6 +283,7 @@ lightDirectionY = degreesToRadians(lightDirectionY)
 lightDirectionZ = degreesToRadians(lightDirectionZ)
 
 hardVertexNormals = []
+softVertexNormals = []
 
 rotatedVerticesXYZ = rotatePoints(verticesPosition, centerPoint, yRotation, xRotation, zRotation)
 
@@ -228,8 +316,8 @@ for face in tqdm(mesh3DFaces, ascii = True, desc = "Calculating face centers"):
 
 sortedDistances = []
 c = 0
-for center in faceCenters:
-    sortedDistances.append([distance(center, cameraPosition), c])
+for cen in faceCenters:
+    sortedDistances.append([distance(cen, cameraPosition), c])
     c += 1
     
 sortFacesByDistance(sortedDistances)
@@ -251,15 +339,21 @@ for face in tqdm(mesh3DFaces, ascii = True, desc = "Calculating face normals"):
     
     k += 1
     
+for vertex in rotatedVerticesXYZ:
+    hardVertexNormals.append([])
+    
 if (settings.calculateVertexNormals):
-    for vertex in tqdm(rotatedVerticesXYZ, ascii = True, desc = "Calculating vertex normals"):
+    h = 0
+    for face in tqdm(mesh3DFaces, ascii = True, desc = "Calculating vertex normals"):
         vertexNormals = []
-        h = 0
-        for face in mesh3DFaces:
-            if vertex in face:
-                vertexNormals.append([faceNormals[h][0] - faceCenters[h][0] + vertex[0], faceNormals[h][1] - faceCenters[h][1] + vertex[1], faceNormals[h][2] - faceCenters[h][2] + vertex[2]])
-            h += 1
-        hardVertexNormals.append(vertexNormals)
+        
+        for vertex in face:
+            hardVertexNormals[rotatedVerticesXYZ.index(vertex)].append([faceNormals[h][0] - faceCenters[h][0] + vertex[0], faceNormals[h][1] - faceCenters[h][1] + vertex[1], faceNormals[h][2] - faceCenters[h][2] + vertex[2]])
+        h += 1
+        
+for normals in hardVertexNormals:
+    softNormal = center(normals)
+    softVertexNormals.append(softNormal)
     
 if (renderFaceNormals):
     for n in faceNormals:
@@ -272,56 +366,130 @@ if (renderFaceCenters):
         newPoint = calculateScreenPoint(n)
         faceCentersScreen.append(newPoint)
     
-verticesNormalsOnScreen = []
+hardVerticesNormalsOnScreen = []
+softVerticesNormalsOnScreen = []
+
 if (renderHardVertexNormals):
     for v in hardVertexNormals:
         vertexNormalsOnScreen = []
         for n in v:
             newPoint = calculateScreenPoint(n)
             vertexNormalsOnScreen.append(newPoint)
-        verticesNormalsOnScreen.append(vertexNormalsOnScreen)
+        hardVerticesNormalsOnScreen.append(vertexNormalsOnScreen)
+        
+if (renderSoftVertexNormals):
+    for n in softVertexNormals:
+        newPoint = calculateScreenPoint(n)
+        softVerticesNormalsOnScreen.append(newPoint)
+        
 facesColors = []
+vertexColors = []
+
 j = 0
 for normal in tqdm(faceNormals, ascii = True, desc = "Calculating face colors"):
     lightNormalAngle = angleBetweenVectors([normal[0] - faceCenters[j][0], normal[1] - faceCenters[j][1], normal[2] - faceCenters[j][2]], lightVector[0])
     
     if (lightNormalAngle <= 90):
-        if (shadingMode == settings.ShadingMode.flatDiffuse):
+        if (shadingMode == settings.ShadingMode.flatDiffuse or shadingMode == settings.ShadingMode.gouraud):
             facesColors.append((2, 2, 2))
         elif (shadingMode == settings.ShadingMode.unlit):
             facesColors.append((settings.unlitColor[0], settings.unlitColor[1], settings.unlitColor[2]))
     else:
-        if (shadingMode == settings.ShadingMode.flatDiffuse):
+        if (shadingMode == settings.ShadingMode.flatDiffuse or shadingMode == settings.ShadingMode.gouraud):
             lightNormalAngle -= 90
             color = (int(lightNormalAngle * diffuseColor[0] / 90), int(lightNormalAngle * diffuseColor[1] / 90), int(lightNormalAngle * diffuseColor[2] / 90))
             facesColors.append(color)
         elif (shadingMode == settings.ShadingMode.unlit):
             facesColors.append((settings.unlitColor[0], settings.unlitColor[1], settings.unlitColor[2]))
-    
     j += 1
 
     
-img = Image.new('RGB', (300, 300), color = 'black')
+j = 0
+for normal in tqdm(softVertexNormals, ascii = True, desc = "Calculating vertex colors"):
+    lightNormalAngle = angleBetweenVectors([normal[0] - rotatedVerticesXYZ[j][0], normal[1] - rotatedVerticesXYZ[j][1], normal[2] - rotatedVerticesXYZ[j][2]], lightVector[0])
+    
+    if (lightNormalAngle <= 90):
+        if (shadingMode == settings.ShadingMode.gouraud):
+            vertexColors.append((2, 2, 2))
+    else:
+        if (shadingMode == settings.ShadingMode.gouraud):
+            lightNormalAngle -= 90
+            color = (int(lightNormalAngle * gouraudColor[0] / 90), int(lightNormalAngle * gouraudColor[1] / 90), int(lightNormalAngle * gouraudColor[2] / 90))
+            vertexColors.append(color)
+    j += 1
+    
+width = int(300 * res)
+height = int(300 * res)
+img = Image.new('RGB', (width , height), color = 'black')
 
 draw = ImageDraw.Draw(img)
+   
+facesDrawn = []
+
+s = 0
+for face in mesh3DFaces:
+    if (angleBetweenVectors([faceNormals[s][0] - faceCenters[s][0], faceNormals[s][1] - faceCenters[s][1], faceNormals[s][2] - faceCenters[s][2]], [cameraPosition[0] - faceCenters[s][0], cameraPosition[1] - faceCenters[s][1], cameraPosition[2] - faceCenters[s][2]]) < 90):
+        facesDrawn.append(1)
+    else:
+        facesDrawn.append(0)
+    s += 1
     
 i = 0
 for face in tqdm(meshFaces, ascii = True, desc = "Rendering faces"):
-    if (distance(faceCenters[i], cameraPosition) > distance(faceNormals[i], cameraPosition)) :
+    if ((facesDrawn[i] == 1 and settings.backfaceCulling == True) or settings.backfaceCulling == False) :
         if (shadingMode == settings.ShadingMode.unlit or shadingMode == settings.ShadingMode.flatDiffuse):
             draw.polygon([coord for vertex in face for coord in vertex], fill = facesColors[i])
         elif (shadingMode == settings.ShadingMode.wireframe):
             draw.polygon([coord for vertex in face for coord in vertex], outline = (settings.wireframeColor[0], settings.wireframeColor[1], settings.wireframeColor[2]))
-        if (renderFaceNormals):
-            draw.line([faceCentersScreen[i][0], faceCentersScreen[i][1], faceNormalsOnScreen[i][0], faceNormalsOnScreen[i][1]], (160, 0, 0))
+        elif (shadingMode == settings.ShadingMode.gouraud):
+            b = 0
+            if (distance([face[1][0], face[1][1], 0], [face[0][0], face[0][1], 0]) > distance([face[1][0], face[1][1], 0], [face[2][0], face[2][1], 0])):
+                while (b < 1):
+                    draw_line(vectorLerpRound(face[1], face[0], b), vectorLerpRound(face[1], face[2], b), colorLerp(vertexColors[verticesOnScreen.index(face[1])], vertexColors[verticesOnScreen.index(face[0])], b), colorLerp(vertexColors[verticesOnScreen.index(face[1])], vertexColors[verticesOnScreen.index(face[2])], b))
+                    b += (1 / int(distance([face[1][0], face[1][1], 0], [face[0][0], face[0][1], 0])))
+            else:
+                while (b < 1):
+                    draw_line(vectorLerpRound(face[1], face[0], b), vectorLerpRound(face[1], face[2], b), colorLerp(vertexColors[verticesOnScreen.index(face[1])], vertexColors[verticesOnScreen.index(face[0])], b), colorLerp(vertexColors[verticesOnScreen.index(face[1])], vertexColors[verticesOnScreen.index(face[2])], b))
+                    b += (1 / int(distance([face[1][0], face[1][1], 0], [face[2][0], face[2][1], 0]))) / 2
+                    
+            b = 0
+            if (distance([face[0][0], face[0][1], 0], [face[1][0], face[1][1], 0]) > distance([face[0][0], face[0][1], 0], [face[2][0], face[2][1], 0])):
+                while (b < 1):
+                    draw_line(vectorLerpRound(face[0], face[1], b), vectorLerpRound(face[0], face[2], b), colorLerp(vertexColors[verticesOnScreen.index(face[0])], vertexColors[verticesOnScreen.index(face[1])], b), colorLerp(vertexColors[verticesOnScreen.index(face[0])], vertexColors[verticesOnScreen.index(face[2])], b))
+                    b += (1 / int(distance([face[0][0], face[0][1], 0], [face[1][0], face[1][1], 0])))
+            else:
+                while (b < 1):
+                    draw_line(vectorLerpRound(face[0], face[1], b), vectorLerpRound(face[0], face[2], b), colorLerp(vertexColors[verticesOnScreen.index(face[0])], vertexColors[verticesOnScreen.index(face[1])], b), colorLerp(vertexColors[verticesOnScreen.index(face[0])], vertexColors[verticesOnScreen.index(face[2])], b))
+                    b += (1 / int(distance([face[0][0], face[0][1], 0], [face[2][0], face[2][1], 0]))) / 2
+                    
+            b = 0
+            if (distance([face[2][0], face[2][1], 0], [face[1][0], face[1][1], 0]) > distance([face[2][0], face[2][1], 0], [face[0][0], face[0][1], 0])):
+                while (b < 1):
+                    draw_line(vectorLerpRound(face[2], face[1], b), vectorLerpRound(face[2], face[0], b), colorLerp(vertexColors[verticesOnScreen.index(face[2])], vertexColors[verticesOnScreen.index(face[1])], b), colorLerp(vertexColors[verticesOnScreen.index(face[2])], vertexColors[verticesOnScreen.index(face[0])], b))
+                    b += (1 / int(distance([face[2][0], face[2][1], 0], [face[1][0], face[1][1], 0])))
+            else:
+                while (b < 1):
+                    draw_line(vectorLerpRound(face[2], face[1], b), vectorLerpRound(face[2], face[0], b), colorLerp(vertexColors[verticesOnScreen.index(face[2])], vertexColors[verticesOnScreen.index(face[1])], b), colorLerp(vertexColors[verticesOnScreen.index(face[2])], vertexColors[verticesOnScreen.index(face[0])], b))
+                    b += (1 / int(distance([face[2][0], face[2][1], 0], [face[0][0], face[0][1], 0]))) / 2
+    if (renderFaceNormals):
+        draw.line([faceCentersScreen[i][0], faceCentersScreen[i][1], faceNormalsOnScreen[i][0], faceNormalsOnScreen[i][1]], (160, 0, 0))
     i += 1
     
 if (renderHardVertexNormals):
     m = 0
-    for vertex in verticesNormalsOnScreen:
+    for vertex in hardVerticesNormalsOnScreen:
         for normal in vertex:
             draw.line([verticesOnScreen[m][0], verticesOnScreen[m][1], normal[0], normal[1]], (0, 0, 200))
         m += 1
+        
+if (renderSoftVertexNormals):
+    z = 0
+    for normal in softVerticesNormalsOnScreen:
+        try:
+            draw.line([verticesOnScreen[z][0], verticesOnScreen[z][1], normal[0], normal[1]], vertexColors[z])
+        except IndexError:
+            noname = "wut"
+        z += 1
     
 if (renderFaceCenters):
     for point in faceCentersScreen:
