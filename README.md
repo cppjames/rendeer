@@ -1,3 +1,4 @@
+
 ![alt text](https://i.imgur.com/WJgYoz2.png "Rendeer")
 
 # Rendeer
@@ -18,8 +19,8 @@ pip install pillow tqdm
 
 ### Usage
 You should be able to run the program by simply opening `rendeer.py`.
-It will take **up to half a minute** for the mesh to be rendered.
-The image you will see should be similar (ideally, identical to) [this](https://i.imgur.com/PmAaj76.png).
+It will take **up to a minute** for the mesh to be rendered.
+The image you will see should be similar (ideally, identical to) [this](https://i.imgur.com/08XfXvD.png).
 
 If you want to import a mesh from an .obj file, you now can! Simply open `wavefront_importer.py` and specify the path to the .obj file. 
 #### Note: *Please* triangulate your mesh before importing it unless you want it to look like [this](https://i.imgur.com/vbUDdbK.png)
@@ -35,7 +36,16 @@ Trees\tree.obj
 The data from the .obj file will be saved in a file called `meshes.py`. You can now run the renderer and it will display your mesh in an image. **You might have to move/rotate your mesh in order to display it as you like.**
 
 ## Changelog
-### What's new in version 2.3.0?
+### What's new in 3.0.0?
+Biggest update yet! Here are some key features:
+- You can now set the resolution so you can go Ultra HD and make some high-level renders (default resolution is 100)
+- calculating hard vertex normals is now up to 1000 times faster! (I'm not joking, the algorithm was terrible)
+- it can now calculate soft vertex normals for nice and smooth shading
+- most importantly, Gouraud shading! Now your meshes are as smooth as they can get. **Note: this feature is still experimental. If you have black dots on your mesh, try increasing the resolution.**
+- many parts of the code have been rewritten, others are just gone
+- removed herobrine.
+
+#### v2.3.0
 - shading modes! choose between `flat diffuse`, `unlit` and `wireframe`!
 - progress bars! stop staring into the void for a minute straight, now you can watch the program doing things
 - variables that the user should modify are in a separate file now (`settings.py`)
