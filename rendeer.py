@@ -448,32 +448,49 @@ for face in tqdm(meshFaces, ascii = True, desc = "Rendering faces"):
             b = 0
             if (distance([face[1][0], face[1][1], 0], [face[0][0], face[0][1], 0]) > distance([face[1][0], face[1][1], 0], [face[2][0], face[2][1], 0])):
                 while (b < 1):
-                    draw_line(vectorLerpRound(face[1], face[0], b), vectorLerpRound(face[1], face[2], b), colorLerp(vertexColors[verticesOnScreen.index(face[1])], vertexColors[verticesOnScreen.index(face[0])], b), colorLerp(vertexColors[verticesOnScreen.index(face[1])], vertexColors[verticesOnScreen.index(face[2])], b))
-                    b += (1 / int(distance([face[1][0], face[1][1], 0], [face[0][0], face[0][1], 0])))
+                    draw_line(vectorLerpRound(face[1], face[0], b), vectorLerpRound(face[1], face[2], b), colorLerp(vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][1])], vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][0])], b), colorLerp(vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][1])], vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][2])], b))
+                    try:
+                        b += (1 / int(distance([face[1][0], face[1][1], 0], [face[0][0], face[0][1], 0])))
+                    except ZeroDivisionError:
+                        b += 1
             else:
                 while (b < 1):
-                    draw_line(vectorLerpRound(face[1], face[0], b), vectorLerpRound(face[1], face[2], b), colorLerp(vertexColors[verticesOnScreen.index(face[1])], vertexColors[verticesOnScreen.index(face[0])], b), colorLerp(vertexColors[verticesOnScreen.index(face[1])], vertexColors[verticesOnScreen.index(face[2])], b))
-                    b += (1 / int(distance([face[1][0], face[1][1], 0], [face[2][0], face[2][1], 0]))) / 2
+                    draw_line(vectorLerpRound(face[1], face[0], b), vectorLerpRound(face[1], face[2], b), colorLerp(vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][1])], vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][0])], b), colorLerp(vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][1])], vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][2])], b))
+                    try:
+                        b += (1 / int(distance([face[1][0], face[1][1], 0], [face[2][0], face[2][1], 0]))) / 2
+                    except ZeroDivisionError:
+                        b += 1
                     
             b = 0
             if (distance([face[0][0], face[0][1], 0], [face[1][0], face[1][1], 0]) > distance([face[0][0], face[0][1], 0], [face[2][0], face[2][1], 0])):
                 while (b < 1):
-                    draw_line(vectorLerpRound(face[0], face[1], b), vectorLerpRound(face[0], face[2], b), colorLerp(vertexColors[verticesOnScreen.index(face[0])], vertexColors[verticesOnScreen.index(face[1])], b), colorLerp(vertexColors[verticesOnScreen.index(face[0])], vertexColors[verticesOnScreen.index(face[2])], b))
-                    b += (1 / int(distance([face[0][0], face[0][1], 0], [face[1][0], face[1][1], 0])))
+                    draw_line(vectorLerpRound(face[0], face[1], b), vectorLerpRound(face[0], face[2], b), colorLerp(vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][0])], vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][1])], b), colorLerp(vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][0])], vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][2])], b))
+                    try:
+                        b += (1 / int(distance([face[0][0], face[0][1], 0], [face[1][0], face[1][1], 0])))
+                    except ZeroDivisionError:
+                        b += 1
             else:
                 while (b < 1):
-                    draw_line(vectorLerpRound(face[0], face[1], b), vectorLerpRound(face[0], face[2], b), colorLerp(vertexColors[verticesOnScreen.index(face[0])], vertexColors[verticesOnScreen.index(face[1])], b), colorLerp(vertexColors[verticesOnScreen.index(face[0])], vertexColors[verticesOnScreen.index(face[2])], b))
-                    b += (1 / int(distance([face[0][0], face[0][1], 0], [face[2][0], face[2][1], 0]))) / 2
-                    
+                    draw_line(vectorLerpRound(face[0], face[1], b), vectorLerpRound(face[0], face[2], b), colorLerp(vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][0])], vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][1])], b), colorLerp(vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][0])], vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][2])], b))
+                    try:
+                        b += (1 / int(distance([face[0][0], face[0][1], 0], [face[2][0], face[2][1], 0]))) / 2
+                    except ZeroDivisionError:
+                        b += 1
             b = 0
             if (distance([face[2][0], face[2][1], 0], [face[1][0], face[1][1], 0]) > distance([face[2][0], face[2][1], 0], [face[0][0], face[0][1], 0])):
                 while (b < 1):
-                    draw_line(vectorLerpRound(face[2], face[1], b), vectorLerpRound(face[2], face[0], b), colorLerp(vertexColors[verticesOnScreen.index(face[2])], vertexColors[verticesOnScreen.index(face[1])], b), colorLerp(vertexColors[verticesOnScreen.index(face[2])], vertexColors[verticesOnScreen.index(face[0])], b))
-                    b += (1 / int(distance([face[2][0], face[2][1], 0], [face[1][0], face[1][1], 0])))
+                    draw_line(vectorLerpRound(face[2], face[1], b), vectorLerpRound(face[2], face[0], b), colorLerp(vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][2])], vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][1])], b), colorLerp(vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][2])], vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][0])], b))
+                    try:
+                        b += (1 / int(distance([face[2][0], face[2][1], 0], [face[1][0], face[1][1], 0])))
+                    except ZeroDivisionError:
+                        b += 1
             else:
                 while (b < 1):
-                    draw_line(vectorLerpRound(face[2], face[1], b), vectorLerpRound(face[2], face[0], b), colorLerp(vertexColors[verticesOnScreen.index(face[2])], vertexColors[verticesOnScreen.index(face[1])], b), colorLerp(vertexColors[verticesOnScreen.index(face[2])], vertexColors[verticesOnScreen.index(face[0])], b))
-                    b += (1 / int(distance([face[2][0], face[2][1], 0], [face[0][0], face[0][1], 0]))) / 2
+                    draw_line(vectorLerpRound(face[2], face[1], b), vectorLerpRound(face[2], face[0], b), colorLerp(vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][2])], vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][1])], b), colorLerp(vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][2])], vertexColors[rotatedVerticesXYZ.index(mesh3DFaces[i][0])], b))
+                    try:
+                        b += (1 / int(distance([face[2][0], face[2][1], 0], [face[0][0], face[0][1], 0]))) / 2
+                    except ZeroDivisionError:
+                        b += 1
     if (renderFaceNormals):
         draw.line([faceCentersScreen[i][0], faceCentersScreen[i][1], faceNormalsOnScreen[i][0], faceNormalsOnScreen[i][1]], (160, 0, 0))
     i += 1
