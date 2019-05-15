@@ -52,7 +52,7 @@ Biggest update yet! Here are some key features:
 - fixed problem with the mesh being too bright where light doesn't touch it
 
 #### v2.2.0
-- now it has a Wavefront importer for all your amazing 3D models.
+- now it has a Wavefront importer for all your amazing 3D models
 - it sorts faces by distance so it can now render them in the (almost) correct order.
 - it can now calculate hard vertex normals (don't know why I made this).
 - I've fixed some of the BAD CODE.
