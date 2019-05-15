@@ -20,7 +20,7 @@ pip install pillow tqdm
 ### Usage
 You should be able to run the program by simply opening `rendeer.py`.
 It will take **up to a minute** for the mesh to be rendered.
-The image you will see should be similar (ideally, identical to) [this](https://i.imgur.com/08XfXvD.png).
+The image you will see should be similar (ideally, identical to) [this](https://i.imgur.com/4A3qM2d.png).
 
 If you want to import a mesh from an .obj file, you now can! Simply open `wavefront_importer.py` and specify the path to the .obj file. 
 #### Note: *Please* triangulate your mesh before importing it unless you want it to look like [this](https://i.imgur.com/vbUDdbK.png)
@@ -41,7 +41,7 @@ Biggest update yet! Here are some key features:
 - You can now set the resolution so you can go Ultra HD and make some high-level renders (default resolution is 100)
 - calculating hard vertex normals is now up to 1000 times faster! (I'm not joking, the algorithm was terrible)
 - it can now calculate soft vertex normals for nice and smooth shading
-- most importantly, Gouraud shading! Now your meshes are as smooth as they can get. **Note: this feature is still experimental. If you have black dots on your mesh, try increasing the resolution.**
+- most importantly, Gouraud shading! Now your meshes are as smooth as they can get
 - many parts of the code have been rewritten, others are just gone
 - removed herobrine.
 
