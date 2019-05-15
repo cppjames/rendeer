@@ -2,7 +2,7 @@ from enum import Enum
 
 ShadingMode = Enum('ShadingMode', 'unlit flatDiffuse wireframe gouraud') #shading modes (don't modify this)
 
-imageResolution = 350
+imageResolution = 200
 
 yRotation = 125 #rotation of the mesh on the Y axis (in degrees)
 xRotation = 0 #rotation of the mesh on the X axis (in degrees)
