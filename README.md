@@ -36,7 +36,7 @@ Trees\tree.obj
 The data from the .obj file will be saved in a file called `meshes.py`. You can now run the renderer and it will display your mesh in an image. **You might have to move/rotate your mesh in order to display it as you like.**
 
 ## Contributors
-- Special thanks to [tweakimp](https://github.com/tweakimp) for doing a lot of optimization and less render time.
+- Special thanks to [tweakimp](https://github.com/tweakimp) for doing a lot of optimization and making the rendering time significantly shorter.
 
 ## Changelog
 ### What's new in 3.0.0?
