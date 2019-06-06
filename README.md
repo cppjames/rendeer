@@ -35,6 +35,9 @@ Trees\tree.obj
 #### Note: The four files (`rendeer.py`, `meshes.py`, `settings.py` and `wavefront_importer.py`) have to be all in the same directory for everything to work properly.
 The data from the .obj file will be saved in a file called `meshes.py`. You can now run the renderer and it will display your mesh in an image. **You might have to move/rotate your mesh in order to display it as you like.**
 
+## Contributors
+- Special thanks to [tweakimp](https://github.com/tweakimp) for doing a lot of optimization and less render time.
+
 ## Changelog
 ### What's new in 3.0.0?
 Biggest update yet! Here are some key features:
