@@ -38,7 +38,11 @@ The data from the .obj file will be saved in a file called `meshes.py`. You can 
 - Special thanks to [tweakimp](https://github.com/tweakimp) for doing a lot of optimization and making the rendering time significantly shorter.
 
 ## Changelog
-### What's new in 3.0.0?
+
+### What's new in 4.0.0?
+- ALAN (Animation Language) has been added: you can now create animations with ease!
+
+#### v3.0.0
 Biggest update yet! Here are some key features:
 - You can now set the resolution so you can go Ultra HD and make some high-level renders (default resolution is 100)
 - calculating hard vertex normals is now up to 1000 times faster! (I'm not joking, the algorithm was terrible)
