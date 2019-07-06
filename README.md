@@ -20,7 +20,6 @@ pip install pillow tqdm
 ### Usage
 You should be able to run the program by simply opening `rendeer.py`.
 It will take **up to a minute** for the mesh to be rendered.
-The image you will see should be similar (ideally, identical to) [this](https://i.imgur.com/4A3qM2d.png).
 
 If you want to import a mesh from an .obj file, you now can! Simply open `wavefront_importer.py` and specify the path to the .obj file. 
 #### Note: *Please* triangulate your mesh before importing it unless you want it to look like [this](https://i.imgur.com/vbUDdbK.png)
