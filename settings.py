@@ -1,11 +1,11 @@
 from enum import Enum
 
-ShadingMode = Enum("ShadingMode", "unlit flatDiffuse wireframe gouraud")  # shading modes (don't modify this)
+ShadingMode = Enum("ShadingMode", "unlit flatDiffuse wireframe gouraud phong")  # shading modes (don't modify this)
 
-imageResolution = 300
+imageResolution = 200
 
-yRotation = 25  # rotation of the mesh on the Y axis (in degrees)
-xRotation = 180  # rotation of the mesh on the X axis (in degrees)
+yRotation = 0  # rotation of the mesh on the Y axis (in degrees)
+xRotation = 0  # rotation of the mesh on the X axis (in degrees)
 zRotation = 0  # rotation of the mesh on the Z axis (in degrees)
 
 lightDirectionX = 0  # rotation of the light source (in degrees)
@@ -25,7 +25,7 @@ gouraudColor = [255, 192, 66]
 
 lightVector = [[1, 0, 0]]  # initial position of the source of light, relative to the center (0, 0, 0)
 
-meshPosition = [1, 0.7, -0.3]  # position of the mesh. duh
+meshPosition = [1, 1, 0]  # position of the mesh. duh
 
 renderFaceNormals = False  # should it render the normals of the faces?
 renderHardVertexNormals = False  # should it render the hard normals of the vertices?
@@ -36,3 +36,12 @@ renderLightSource = False  # should it render the source of light and its direct
 
 cameraPosition = [1, 1, -2]  # position of the camera
 imagePlaneZ = 0  # position of the plane (on the Z axis)
+
+
+curves = [[[0, 0], [0, 0.5], [0.5, 1], [1, 1]],
+          [[0, 0], [0.5, 0], [0.5, 1], [1, 1]],
+          [[0, 0], [0.27, 0.17], [0.25, 1], [1, 1]],
+                #you can add more curves!
+          ]
+          
+animationScript = "1f"
