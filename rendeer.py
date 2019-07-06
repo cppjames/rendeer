@@ -316,13 +316,13 @@ renderNumber = 0
 for key in animationScript:
     key = key.split(";")
     
-    repeatMode = "times"
-    interpolation = "linear"
-    bezierNumber = 0
+    repeatMode = "steps"
+    interpolation = "bezier"
+    bezierNumber = 2
     numOfTimes = 1
     for item in key:
         if item.endswith("f"):
-            repeatMode = "times"
+            repeatMode = "steps"
             numOfTimes = int(item[:-1])
         
     xRotationTemp = xRotation
