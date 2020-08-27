@@ -19,7 +19,7 @@ pip install pillow tqdm
 
 ### Usage
 You should be able to run the program by simply opening `rendeer.py`.
-It will take **up to a minute** for the mesh to be rendered.
+It will probably take **up to a minute** for the mesh to be rendered.
 
 If you want to import a mesh from an .obj file, you now can! Simply open `wavefront_importer.py` and specify the path to the .obj file. 
 #### Note: *Please* triangulate your mesh before importing it unless you want it to look like [this](https://i.imgur.com/vbUDdbK.png)
@@ -40,7 +40,7 @@ The data from the .obj file will be saved in a file called `meshes.py`. You can 
 ## Changelog
 
 ### What's new in 4.0.0?
-- ALAN (Animation Language) has been added: you can now create animations with ease!
+- ALAN (Animation Language) has been added: you can now create animations with ease! (no pun intended)
 
 #### v3.0.0
 Biggest update yet! Here are some key features:
