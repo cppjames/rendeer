@@ -44,12 +44,10 @@ The data from the .obj file will be saved in a file called `meshes.py`. You can 
 
 #### v3.0.0
 Biggest update yet! Here are some key features:
-- You can now set the resolution so you can go Ultra HD and make some high-level renders (default resolution is 100)
-- calculating hard vertex normals is now up to 1000 times faster! (I'm not joking, the algorithm was terrible)
-- it can now calculate soft vertex normals for nice and smooth shading
-- most importantly, Gouraud shading! Now your meshes are as smooth as they can get
+- You can now set the resolution so you can go Ultra HD (default resolution is 100)
+- calculating hard vertex normals is now up to 1000 times faster
+- Gouraud shading! Now your meshes are as smooth as they can get
 - many parts of the code have been rewritten, others are just gone
-- removed herobrine.
 
 #### v2.3.0
 - shading modes! choose between `flat diffuse`, `unlit` and `wireframe`!
@@ -58,7 +56,7 @@ Biggest update yet! Here are some key features:
 - fixed problem with the mesh being too bright where light doesn't touch it
 
 #### v2.2.0
-- now it has a Wavefront importer for all your amazing 3D models
+- now it has a Wavefront importer for your 3D models
 - it sorts faces by distance so it can now render them in the (almost) correct order.
-- it can now calculate hard vertex normals (don't know why I made this).
-- I've fixed some of the BAD CODE.
+- it can now calculate hard vertex normals
+- I've fixed some of the 0x0BADC0DE.
